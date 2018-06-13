@@ -13,8 +13,9 @@ for file in os.listdir(data_path):
     if file.endswith(".csv"):
         filepaths.append(os.path.join(data_path, file))
 
-#Applying .DictReader method to standardize python code for all files in filepath list
+#Use .DictReader method to standardize python code for all files in filepath list
 for file in filepaths:
+    #declare global variables for .csv filesh
     tot_revenue = 0
     month_count = 0
     revenue = 0 
@@ -26,21 +27,23 @@ for file in filepaths:
             #establish rev_diff dictionary to cauculate max/min
             rev_diff = {"rev_diff": int("{Revenue}".format(**row)) - revenue}
             rev_change = rev_change + int("{Revenue}".format(**row)) - revenue
-            revenue = int("{Revenue}".format(**row))
+            revenue = int("{Revenue}".format(**row))           
             tot_revenue += revenue
             month_count += 1
-            data_dict_list.append({**row, **rev_diff})
+            data_dict_list.append({**row, **rev_diff})          
         #parse out data_dict_list into max and min dictionaries
         increase_dict = dict(max(data_dict_list, key=lambda x:x["rev_diff"]))
         decrease_dict = dict(min(data_dict_list, key=lambda x:x["rev_diff"]))
-        #pull dqate and rev_diff valuesw for corresponding min/max months.
+        #pull date and rev_diff valuesw for corresponding min/max months.
         increase_date = increase_dict.get("Date")
         increase_revdiff = increase_dict.get("rev_diff")
         decrease_date = decrease_dict.get("Date")
         decrease_revdiff = decrease_dict.get("rev_diff")
         #skip over data in the first row 
+        print(data_dict_list)
         first_row = data_dict_list[0]
         first_row_revdiff = first_row.get("rev_diff")
+        # print(first_row_revdiff)
         rev_change = rev_change - first_row_revdiff
         avg_change = int(rev_change/(month_count-1))
 
@@ -56,8 +59,8 @@ for file in filepaths:
             f"Total Months = {month_count}\n"
             f"Total Revenue = {tot_revenue}\n"
             f"Average Revenue Change = {avg_change}\n"
-            f"Greatest Increase In Revenue: {increase_date} (${increase_revdiff}\n"
-            f"Greatest Decrease In Revenue: {decrease_date} (${decrease_revdiff}\n"
+            f"Greatest Increase In Revenue: {increase_date} (${increase_revdiff})\n"
+            f"Greatest Decrease In Revenue: {decrease_date} (${decrease_revdiff})\n"
         )
 
         #generate .txt file for datasets and export that to output folder.
@@ -69,8 +72,8 @@ for file in filepaths:
             f"Total Months = {month_count}\n"
             f"Total Revenue = {tot_revenue}\n"
             f"Average Revenue Change = {avg_change}\n"
-            f"Greatest Increase In Revenue: {increase_date} (${increase_revdiff}\n"
-            f"Greatest Decrease In Revenue: {decrease_date} (${decrease_revdiff}\n"
+            f"Greatest Increase In Revenue: {increase_date} (${increase_revdiff})\n"
+            f"Greatest Decrease In Revenue: {decrease_date} (${decrease_revdiff})\n"
         )
 
 
